@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="es" data-bs-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DONA-CHAIN · Donaciones transparentes</title>
+  <meta name="description" content="Plataforma de donaciones transparentes con blockchain simulada.">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link href="css/styles.css" rel="stylesheet">
+</head>
+<body>
+
+  <nav id="navbar"></nav>
+
+  <main>
+    <section class="hero">
+      <div class="container position-relative" style="z-index:1">
+        <div class="row align-items-center g-5">
+          <div class="col-lg-7 fade-in">
+            <span class="section-kicker"><i class="bi bi-shield-check me-1"></i>Blockchain · SHA-256 · Proof of Work</span>
+            <h1 class="display-4 mt-3 mb-3">Cada donación,<br><span class="grad">verificable e inmutable.</span></h1>
+            <p class="lead mb-4">DONA-CHAIN registra cada aporte en una cadena de bloques. Nadie puede alterar un monto sin que el sistema lo detecte.
+              Dona en efectivo con QR, en criptomoneda simulada o en especie.</p>
+            <div class="d-flex flex-wrap gap-2">
+              <a href="#campanas" class="btn btn-gold btn-lg"><i class="bi bi-heart-fill me-2"></i>Donar ahora</a>
+              <a href="blockchain.html" class="btn btn-ghost btn-lg"><i class="bi bi-boxes me-2"></i>Ver la blockchain</a>
+            </div>
+          </div>
+          <div class="col-lg-5">
+            <div class="row g-3">
+              <div class="col-6"><div class="stat-pill"><div class="v text-gold" id="statRecaudado">—</div><div class="l">Recaudado</div></div></div>
+              <div class="col-6"><div class="stat-pill"><div class="v" id="statDonantes">—</div><div class="l">Donantes</div></div></div>
+              <div class="col-6"><div class="stat-pill"><div class="v" id="statCampanas">—</div><div class="l">Campañas activas</div></div></div>
+              <div class="col-6"><div class="stat-pill"><div class="v text-emerald" id="statBloques">—</div><div class="l">Bloques minados</div></div></div>
+            </div>
+            <div class="chain-deco mt-4 justify-content-center" aria-hidden="true">
+              <div class="blk">#0</div><div class="lnk"></div>
+              <div class="blk" style="animation-delay:.4s">#1</div><div class="lnk"></div>
+              <div class="blk" style="animation-delay:.8s">#2</div><div class="lnk"></div>
+              <div class="blk" style="animation-delay:1.2s">00…</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="container mb-5">
+      <h4 class="ornament-title mb-4">¿Cómo funciona?</h4>
+      <div class="row g-3">
+        <div class="col-md-3 col-6"><div class="card-dc step-card"><div class="ico"><i class="bi bi-person-vcard"></i></div><div class="num">PASO 1</div><h6 class="mt-1">Regístrate con tu CI</h6><small class="text-muted">Verificamos tu identidad (KYC) y te damos una billetera.</small></div></div>
+        <div class="col-md-3 col-6"><div class="card-dc step-card"><div class="ico"><i class="bi bi-qr-code-scan"></i></div><div class="num">PASO 2</div><h6 class="mt-1">Dona como prefieras</h6><small class="text-muted">QR bancario, crypto simulada o bienes en especie.</small></div></div>
+        <div class="col-md-3 col-6"><div class="card-dc step-card"><div class="ico"><i class="bi bi-check2-square"></i></div><div class="num">PASO 3</div><h6 class="mt-1">Conciliación</h6><small class="text-muted">Un administrador verifica tu comprobante.</small></div></div>
+        <div class="col-md-3 col-6"><div class="card-dc step-card"><div class="ico"><i class="bi bi-boxes"></i></div><div class="num">PASO 4</div><h6 class="mt-1">Registro inmutable</h6><small class="text-muted">Tu aporte queda en un bloque minado con SHA-256.</small></div></div>
+      </div>
+    </section>
+
+    <section class="container" id="campanas">
+      <div class="d-flex flex-wrap justify-content-between align-items-end gap-3 mb-3">
+        <div>
+          <span class="section-kicker">Causas verificadas</span>
+          <h2 class="fw-800 mb-0">Campañas activas</h2>
+        </div>
+        <div class="d-flex gap-2 flex-wrap">
+          <div class="input-group" style="max-width:320px">
+            <span class="input-group-text"><i class="bi bi-search"></i></span>
+            <input type="search" id="buscarCampana" class="form-control" placeholder="Buscar campaña u organización…">
+          </div>
+          <input type="checkbox" class="btn-check" id="soloUrgentes" autocomplete="off">
+          <label class="btn btn-outline-danger" for="soloUrgentes"><i class="bi bi-lightning-charge-fill me-1"></i>Urgentes</label>
+        </div>
+      </div>
+      <div class="d-flex flex-wrap gap-2 mb-4" id="filtroCategorias">
+        <button class="filter-pill active" data-cat="">Todas</button>
+      </div>
+      <div class="row g-4" id="campanasGrid">
+        <div class="col-md-6 col-lg-4"><div class="skeleton" style="height:360px"></div></div>
+        <div class="col-md-6 col-lg-4"><div class="skeleton" style="height:360px"></div></div>
+        <div class="col-md-6 col-lg-4"><div class="skeleton" style="height:360px"></div></div>
+      </div>
+    </section>
+
+    <section class="container mt-5">
+      <div class="row g-4">
+        <div class="col-lg-7">
+          <div class="card-dc h-100">
+            <div class="card-header d-flex justify-content-between">
+              <span><i class="bi bi-activity text-emerald me-2"></i>Últimas donaciones verificadas</span>
+              <a href="blockchain.html" class="small">Ver en el explorador <i class="bi bi-arrow-right"></i></a>
+            </div>
+            <div class="card-body py-2" id="feedRecientes"><div class="text-muted small py-3">Cargando…</div></div>
+          </div>
+        </div>
+        <div class="col-lg-5">
+          <div class="card-dc h-100">
+            <div class="card-body">
+              <span class="section-kicker">¿Eres una organización?</span>
+              <h4 class="fw-800 mt-2">Publica tu campaña</h4>
+              <p class="text-muted">Registra tu ONG, fundación o empresa con su NIT. Una vez verificada podrás crear campañas y recibir donaciones trazables.</p>
+              <ul class="list-unstyled small text-muted mb-4">
+                <li class="mb-2"><i class="bi bi-check2-circle text-emerald me-2"></i>Verificación de NIT y documentos</li>
+                <li class="mb-2"><i class="bi bi-check2-circle text-emerald me-2"></i>Billetera para donaciones crypto</li>
+                <li><i class="bi bi-check2-circle text-emerald me-2"></i>Chat directo con tus donantes</li>
+              </ul>
+              <a href="perfil.html#organizacion" class="btn btn-outline-gold" id="btnSoyOrg"><i class="bi bi-building-add me-2"></i>Registrar organización</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer id="footer"></footer>
+
+  <div class="modal fade" id="modalLogin" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <form id="formLogin" novalidate>
+          <div class="modal-header">
+            <h5 class="modal-title"><i class="bi bi-shield-lock text-gold me-2"></i>Iniciar sesión</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <label class="form-label" for="loginEmail">Correo electrónico</label>
+              <div class="input-group"><span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                <input type="email" class="form-control" id="loginEmail" placeholder="correo@ejemplo.com" required autocomplete="username"></div>
+            </div>
+            <div class="mb-3">
+              <label class="form-label" for="loginPassword">Contraseña</label>
+              <div class="input-group"><span class="input-group-text"><i class="bi bi-key"></i></span>
+                <input type="password" class="form-control" id="loginPassword" placeholder="••••••••" required autocomplete="current-password">
+                <button class="btn btn-ghost" type="button" data-toggle-pass="loginPassword"><i class="bi bi-eye"></i></button></div>
+            </div>
+            <div class="mb-3 d-none" id="grupo2FA">
+              <label class="form-label" for="login2FA">Código de verificación (2FA)</label>
+              <div class="input-group"><span class="input-group-text"><i class="bi bi-phone"></i></span>
+                <input type="text" class="form-control mono text-center fs-5" id="login2FA" placeholder="000000" maxlength="6" inputmode="numeric" autocomplete="one-time-code"></div>
+              <small class="text-muted">Abre Google Authenticator / Authy e ingresa el código de 6 dígitos.</small>
+            </div>
+            <div class="alert alert-dark small mb-0 border" style="border-color:var(--dc-border)!important">
+              <i class="bi bi-info-circle text-gold me-1"></i>Tras <strong>3 intentos fallidos</strong> la cuenta se bloquea 15 minutos.
+              <div class="mt-2 text-muted">Prueba: <code>donante@test.com</code> / <code>donante123</code></div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-link text-muted me-auto" id="irRegistro">¿No tienes cuenta? Regístrate</button>
+            <button type="submit" class="btn btn-gold" id="btnLogin"><i class="bi bi-box-arrow-in-right me-1"></i>Ingresar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="modalRegistro" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <form id="formRegistro" novalidate enctype="multipart/form-data">
+          <div class="modal-header">
+            <h5 class="modal-title"><i class="bi bi-person-plus text-gold me-2"></i>Crear cuenta de donante</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+          <div class="modal-body">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label" for="regNombre">Nombre completo *</label>
+                <input type="text" class="form-control" id="regNombre" name="nombre" required minlength="3" placeholder="Juan Pérez Mamani">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label" for="regEmail">Correo electrónico *</label>
+                <input type="email" class="form-control" id="regEmail" name="email" required placeholder="correo@ejemplo.com">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label" for="regCI">Cédula de Identidad (CI) *</label>
+                <div class="input-group"><span class="input-group-text"><i class="bi bi-person-vcard"></i></span>
+                  <input type="text" class="form-control" id="regCI" name="ci" required placeholder="1234567 LP" pattern="[0-9]{5,10}.*"></div>
+                <small class="text-muted">Número y extensión (LP, CB, SC…). Debe ser único.</small>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label" for="regTelefono">Teléfono</label>
+                <div class="input-group"><span class="input-group-text">+591</span>
+                  <input type="tel" class="form-control" id="regTelefono" name="telefono" placeholder="71234567"></div>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label" for="regPassword">Contraseña *</label>
+                <input type="password" class="form-control" id="regPassword" name="password" required minlength="6" placeholder="Mínimo 6 caracteres" autocomplete="new-password">
+                <div class="progress-dc mt-2" style="height:5px"><div class="progress-bar" id="passFuerza" style="width:0"></div></div>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label" for="regPassword2">Confirmar contraseña *</label>
+                <input type="password" class="form-control" id="regPassword2" name="confirmar_password" required minlength="6" autocomplete="new-password">
+              </div>
+              <div class="col-12">
+                <label class="form-label" for="regCIFoto">Foto del CI (anverso) — verificación KYC</label>
+                <input type="file" class="form-control" id="regCIFoto" name="ci_foto" accept="image/jpeg,image/png,image/webp,application/pdf">
+                <small class="text-muted">JPG, PNG, WEBP o PDF · máx. 5 MB. Puedes subirla después desde "Mi Perfil".</small>
+              </div>
+              <div class="col-12">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="regTerminos" required>
+                  <label class="form-check-label small" for="regTerminos">Acepto que mis donaciones queden registradas de forma pública e inmutable en la blockchain de DONA-CHAIN.</label>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-link text-muted me-auto" id="irLogin">Ya tengo cuenta</button>
+            <button type="submit" class="btn btn-gold" id="btnRegistro"><i class="bi bi-check2-circle me-1"></i>Crear cuenta</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="modalDetalle" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="detalleTitulo">Campaña</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body" id="detalleBody"></div>
+        <div class="modal-footer">
+          <button class="btn btn-ghost me-auto" id="detalleMensaje"><i class="bi bi-chat-dots me-1"></i>Escribir a la organización</button>
+          <button class="btn btn-gold" id="detalleDonar"><i class="bi bi-heart-fill me-1"></i>Donar a esta campaña</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="modalDonar" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <div>
+            <h5 class="modal-title mb-0"><i class="bi bi-heart-fill text-gold me-2"></i>Realizar donación</h5>
+            <small class="text-muted" id="donarCampanaTitulo"></small>
+          </div>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <ul class="nav nav-tabs nav-tabs-dc mb-4" role="tablist">
+            <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tabQR" type="button"><i class="bi bi-qr-code me-1"></i>QR Bancario</button></li>
+            <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabCrypto" type="button"><i class="bi bi-currency-bitcoin me-1"></i>Crypto</button></li>
+            <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabEspecie" type="button"><i class="bi bi-box-seam me-1"></i>En especie</button></li>
+          </ul>
+          <div class="tab-content">
+            <div class="tab-pane fade show active" id="tabQR">
+              <form id="formDonarQR" novalidate>
+                <div class="row g-4 align-items-center">
+                  <div class="col-md-5 text-center">
+                    <div class="qr-box"><div id="qrPago"></div></div>
+                    <div class="small text-muted mt-2">Escanea con la app de tu banco</div>
+                    <div class="mono small text-gold mt-1" id="qrRef"></div>
+                  </div>
+                  <div class="col-md-7">
+                    <label class="form-label" for="qrMonto">Monto a donar (Bs) *</label>
+                    <div class="input-group mb-2"><span class="input-group-text">Bs</span>
+                      <input type="number" class="form-control fs-5" id="qrMonto" min="1" step="0.01" value="50" required></div>
+                    <div class="d-flex gap-2 mb-3 flex-wrap">
+                      <button type="button" class="btn btn-sm btn-ghost" data-monto="20">Bs 20</button>
+                      <button type="button" class="btn btn-sm btn-ghost" data-monto="50">Bs 50</button>
+                      <button type="button" class="btn btn-sm btn-ghost" data-monto="100">Bs 100</button>
+                      <button type="button" class="btn btn-sm btn-ghost" data-monto="500">Bs 500</button>
+                    </div>
+                    <label class="form-label" for="qrComprobante">Foto del comprobante de pago *</label>
+                    <input type="file" class="form-control" id="qrComprobante" accept="image/jpeg,image/png,image/webp,application/pdf" required>
+                    <small class="text-muted d-block mt-2"><i class="bi bi-hourglass-split me-1"></i>Tu donación quedará <strong>pendiente</strong> hasta que un administrador concilie el comprobante. Luego se registrará en la blockchain.</small>
+                  </div>
+                </div>
+                <div class="text-end mt-4"><button type="submit" class="btn btn-gold" id="btnDonarQR"><i class="bi bi-send-check me-1"></i>Enviar donación</button></div>
+              </form>
+            </div>
+
+            <div class="tab-pane fade" id="tabCrypto">
+              <form id="formDonarCrypto" novalidate>
+                <div class="wallet-card mb-3">
+                  <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                      <div class="small text-muted text-uppercase" style="letter-spacing:.12em">Tu billetera DONA-CHAIN</div>
+                      <div class="hash mt-1" id="cryptoDireccion">—</div>
+                    </div>
+                    <i class="bi bi-wallet2 fs-3 text-emerald"></i>
+                  </div>
+                  <div class="mt-3"><span class="text-muted small">Saldo disponible</span><div class="fs-3 fw-800 text-emerald" id="cryptoSaldo">—</div></div>
+                </div>
+                <label class="form-label" for="cryptoMonto">Monto (DCT · DonaChain Token, 1 DCT = Bs 1)</label>
+                <div class="input-group"><span class="input-group-text">DCT</span>
+                  <input type="number" class="form-control fs-5" id="cryptoMonto" min="1" step="0.01" value="25" required></div>
+                <small class="text-muted d-block mt-2"><i class="bi bi-lightning-charge me-1"></i>Las donaciones crypto se confirman <strong>al instante</strong>: se descuenta de tu billetera, se crea la transacción y, cada 5 transacciones, se mina un bloque.</small>
+                <div class="text-end mt-4"><button type="submit" class="btn btn-emerald" id="btnDonarCrypto"><i class="bi bi-send me-1"></i>Firmar y enviar</button></div>
+              </form>
+            </div>
+
+            <div class="tab-pane fade" id="tabEspecie">
+              <form id="formDonarEspecie" novalidate>
+                <div class="row g-3">
+                  <div class="col-md-7">
+                    <label class="form-label" for="especieTipo">¿Qué vas a donar? *</label>
+                    <select class="form-select" id="especieTipo" required></select>
+                  </div>
+                  <div class="col-md-5">
+                    <label class="form-label" for="especieCantidad">Cantidad *</label>
+                    <div class="input-group">
+                      <input type="number" class="form-control" id="especieCantidad" min="0.01" step="0.01" value="10" required>
+                      <span class="input-group-text" id="especieUnidad">u.</span>
+                    </div>
+                  </div>
+                  <div class="col-12">
+                    <div class="alert alert-dark border small mb-0" style="border-color:var(--dc-border)!important" id="especieNecesidad"></div>
+                  </div>
+                </div>
+                <small class="text-muted d-block mt-3"><i class="bi bi-qr-code me-1"></i>Al registrar, recibirás un <strong>código QR de recepción</strong>. Preséntalo al entregar los bienes en el punto de acopio.</small>
+                <div class="text-end mt-4"><button type="submit" class="btn btn-gold" id="btnDonarEspecie"><i class="bi bi-box-seam me-1"></i>Generar código de recepción</button></div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script src="js/core.js"></script>
+  <script src="js/notificaciones.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

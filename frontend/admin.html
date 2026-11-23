@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="es" data-bs-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel de Administración · DONA-CHAIN</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link href="css/styles.css" rel="stylesheet">
+</head>
+<body>
+  <nav id="navbar"></nav>
+
+  <main class="container-fluid px-lg-4 py-4">
+    <div class="admin-layout">
+      <aside class="card-dc sidebar-dc">
+        <div class="sidebar-title">General</div>
+        <nav class="nav flex-column" id="adminNav">
+          <a class="nav-link active" href="#dashboard" data-sec="dashboard"><i class="bi bi-speedometer2"></i>Dashboard</a>
+          <a class="nav-link" href="#conciliacion" data-sec="conciliacion"><i class="bi bi-check2-square"></i>Conciliación <span class="badge bg-warning text-dark" id="navPendientes">0</span></a>
+          <a class="nav-link" href="#campanas" data-sec="campanas"><i class="bi bi-megaphone"></i>Campañas</a>
+          <div class="sidebar-title">Comunidad</div>
+          <a class="nav-link" href="#usuarios" data-sec="usuarios"><i class="bi bi-people"></i>Usuarios</a>
+          <a class="nav-link" href="#reportes" data-sec="reportes"><i class="bi bi-flag"></i>Reportes <span class="badge bg-danger" id="navReportes">0</span></a>
+          <div class="sidebar-title">Finanzas</div>
+          <a class="nav-link" href="#optimizacion" data-sec="optimizacion"><i class="bi bi-calculator"></i>Optimización</a>
+          <a class="nav-link" href="#catalogos" data-sec="catalogos"><i class="bi bi-tags"></i>Catálogos</a>
+          <div class="sidebar-title">Seguridad</div>
+          <a class="nav-link" href="#auditoria" data-sec="auditoria"><i class="bi bi-journal-text"></i>Auditoría</a>
+          <a class="nav-link" href="blockchain.html"><i class="bi bi-boxes"></i>Explorador</a>
+          <a class="nav-link d-none" href="verificar.html" id="navVerificar"><i class="bi bi-patch-check"></i>Verificación KYC</a>
+        </nav>
+      </aside>
+
+      <section>
+
+        <div class="admin-sec" id="sec-dashboard">
+          <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-2">
+            <div><span class="section-kicker">Panel de control</span><h3 class="fw-800 mb-0">Dashboard</h3></div>
+            <div class="d-flex gap-2">
+              <button class="btn btn-ghost" id="btnRefrescar"><i class="bi bi-arrow-clockwise me-1"></i>Actualizar</button>
+              <button class="btn btn-outline-gold" id="btnMinar"><i class="bi bi-hammer me-1"></i>Minar bloque</button>
+              <button class="btn btn-emerald" id="btnValidar"><i class="bi bi-shield-check me-1"></i>Validar Blockchain</button>
+            </div>
+          </div>
+
+          <div id="estadoCadena" class="mb-4"></div>
+
+          <div class="row g-3 mb-4" id="kpis">
+            <div class="col-sm-6 col-xl-3"><div class="card-dc kpi"><div class="ico"><i class="bi bi-cash-stack"></i></div><div class="v text-gold" id="kRecaudado">—</div><div class="l">Total recaudado</div></div></div>
+            <div class="col-sm-6 col-xl-3"><div class="card-dc kpi em"><div class="ico"><i class="bi bi-receipt"></i></div><div class="v" id="kConfirmadas">—</div><div class="l">Donaciones confirmadas</div></div></div>
+            <div class="col-sm-6 col-xl-3"><div class="card-dc kpi danger"><div class="ico"><i class="bi bi-hourglass-split"></i></div><div class="v" id="kPendientes">—</div><div class="l">Pendientes de conciliar</div></div></div>
+            <div class="col-sm-6 col-xl-3"><div class="card-dc kpi info"><div class="ico"><i class="bi bi-people"></i></div><div class="v" id="kDonantes">—</div><div class="l">Donantes únicos</div></div></div>
+            <div class="col-sm-6 col-xl-3"><div class="card-dc kpi"><div class="ico"><i class="bi bi-megaphone"></i></div><div class="v" id="kCampanas">—</div><div class="l">Campañas activas</div></div></div>
+            <div class="col-sm-6 col-xl-3"><div class="card-dc kpi em"><div class="ico"><i class="bi bi-boxes"></i></div><div class="v" id="kBloques">—</div><div class="l">Bloques minados</div></div></div>
+            <div class="col-sm-6 col-xl-3"><div class="card-dc kpi info"><div class="ico"><i class="bi bi-diagram-3"></i></div><div class="v" id="kMempool">—</div><div class="l">TX en mempool</div></div></div>
+            <div class="col-sm-6 col-xl-3"><div class="card-dc kpi danger"><div class="ico"><i class="bi bi-person-vcard"></i></div><div class="v" id="kKyc">—</div><div class="l">KYC / Org. por verificar</div></div></div>
+          </div>
+
+          <div class="row g-4">
+            <div class="col-xl-7">
+              <div class="card-dc h-100">
+                <div class="card-header"><i class="bi bi-bar-chart-line text-gold me-2"></i>Recaudación por campaña</div>
+                <div class="card-body" id="chartCampanas"></div>
+              </div>
+            </div>
+            <div class="col-xl-5">
+              <div class="card-dc h-100">
+                <div class="card-header"><i class="bi bi-pie-chart text-gold me-2"></i>Donaciones por tipo</div>
+                <div class="card-body">
+                  <div class="donut" id="donutTipos"><div class="center"><div><div class="fs-3" id="donutTotal">0</div><div class="small text-muted fw-normal">donaciones</div></div></div></div>
+                  <div class="mt-3" id="donutLeyenda"></div>
+                </div>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="card-dc">
+                <div class="card-header"><i class="bi bi-graph-up text-gold me-2"></i>Donaciones de los últimos 7 días</div>
+                <div class="card-body">
+                  <div class="vchart" id="chartDias"></div>
+                  <div class="vchart-labels" id="chartDiasLbl"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="admin-sec d-none" id="sec-conciliacion">
+          <div class="d-flex flex-wrap justify-content-between align-items-end mb-3 gap-2">
+            <div><span class="section-kicker">Conciliación diferida</span><h3 class="fw-800 mb-0">Donaciones pendientes</h3></div>
+            <form class="d-flex gap-2" id="formCodigo">
+              <div class="input-group"><span class="input-group-text"><i class="bi bi-qr-code-scan"></i></span>
+                <input type="text" class="form-control mono text-uppercase" id="codigoRecepcion" placeholder="DC-XXXXXX" maxlength="20"></div>
+              <button class="btn btn-outline-gold text-nowrap" id="btnCodigo"><i class="bi bi-box-seam me-1"></i>Confirmar recepción</button>
+            </form>
+          </div>
+          <div class="card-dc">
+            <div class="p-3 d-flex flex-wrap gap-2 align-items-center border-bottom" style="border-color:var(--dc-border-soft)!important">
+              <div class="input-group" style="max-width:280px"><span class="input-group-text"><i class="bi bi-search"></i></span>
+                <input type="search" class="form-control" id="buscarPendiente" placeholder="Buscar donante, CI, campaña…"></div>
+              <select class="form-select" style="max-width:170px" id="filtroTipoPendiente">
+                <option value="">Todos los tipos</option><option value="efectivo">Efectivo (QR)</option><option value="especie">Especie</option>
+              </select>
+              <span class="small text-muted ms-2" id="seleccionInfo">0 seleccionadas</span>
+              <div class="ms-auto d-flex gap-2">
+                <button class="btn btn-outline-danger" id="btnRechazar" disabled><i class="bi bi-x-circle me-1"></i>Rechazar</button>
+                <button class="btn btn-emerald" id="btnAprobar" disabled><i class="bi bi-check2-circle me-1"></i>Conciliar seleccionadas</button>
+              </div>
+            </div>
+            <div class="table-wrap">
+              <table class="table table-dc table-hover" id="tablaPendientes">
+                <thead><tr>
+                  <th style="width:40px"><input class="form-check-input" type="checkbox" id="checkTodos"></th>
+                  <th data-sort="num">#</th><th data-sort>Donante</th><th data-sort>CI</th><th data-sort>Campaña</th><th data-sort>Tipo</th>
+                  <th data-sort="num">Monto / Cantidad</th><th>Comprobante / Código</th><th data-sort>Fecha</th>
+                </tr></thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="admin-sec d-none" id="sec-campanas">
+          <div class="mb-3"><span class="section-kicker">Gestión</span><h3 class="fw-800 mb-0">Campañas</h3></div>
+          <div class="card-dc">
+            <div class="p-3 border-bottom" style="border-color:var(--dc-border-soft)!important">
+              <div class="input-group" style="max-width:320px"><span class="input-group-text"><i class="bi bi-search"></i></span>
+                <input type="search" class="form-control" id="buscarCampAdmin" placeholder="Buscar…"></div>
+            </div>
+            <div class="table-wrap">
+              <table class="table table-dc table-hover" id="tablaCampanas">
+                <thead><tr><th data-sort="num">#</th><th data-sort>Título</th><th data-sort>Organización</th><th data-sort="num">Recaudado</th><th data-sort="num">Avance</th><th data-sort>Cierre</th><th>Urgente</th><th>Estado</th></tr></thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="admin-sec d-none" id="sec-usuarios">
+          <div class="mb-3"><span class="section-kicker">Comunidad</span><h3 class="fw-800 mb-0">Gestión de usuarios</h3></div>
+          <div class="card-dc">
+            <div class="p-3 d-flex flex-wrap gap-2 border-bottom" style="border-color:var(--dc-border-soft)!important">
+              <div class="input-group" style="max-width:300px"><span class="input-group-text"><i class="bi bi-search"></i></span>
+                <input type="search" class="form-control" id="buscarUsuario" placeholder="Nombre, email o CI…"></div>
+              <select class="form-select" style="max-width:160px" id="filtroRol">
+                <option value="">Todos los roles</option><option value="donante">Donante</option><option value="empresa">Empresa</option><option value="admin">Admin</option><option value="superadmin">SuperAdmin</option>
+              </select>
+              <select class="form-select" style="max-width:160px" id="filtroEstado">
+                <option value="">Todos los estados</option><option value="activo">Activo</option><option value="suspendido">Suspendido</option>
+              </select>
+            </div>
+            <div class="table-wrap">
+              <table class="table table-dc table-hover" id="tablaUsuarios">
+                <thead><tr><th data-sort="num">#</th><th data-sort>Usuario</th><th data-sort>CI</th><th data-sort>Rol</th><th>KYC</th><th>Seguridad</th><th data-sort="num">Saldo</th><th data-sort>Estado</th><th class="text-end">Acciones</th></tr></thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="admin-sec d-none" id="sec-reportes">
+          <div class="d-flex justify-content-between align-items-end mb-3">
+            <div><span class="section-kicker">Comunidad</span><h3 class="fw-800 mb-0">Reportes</h3></div>
+            <div class="form-check form-switch"><input class="form-check-input" type="checkbox" id="verTodosReportes"><label class="form-check-label" for="verTodosReportes">Mostrar revisados</label></div>
+          </div>
+          <div id="listaReportesAdmin"></div>
+        </div>
+
+        <div class="admin-sec d-none" id="sec-optimizacion">
+          <div class="mb-3"><span class="section-kicker">Optimización financiera</span><h3 class="fw-800 mb-0">Financiamiento cuadrático</h3></div>
+          <div class="row g-4">
+            <div class="col-lg-5">
+              <div class="card-dc mb-4">
+                <div class="card-body">
+                  <div class="formula mb-3">Puntuación = ( Σ √donación<sub>i</sub> )²</div>
+                  <p class="small text-muted mb-0">El fondo de reserva se reparte en proporción a la puntuación de cada campaña. Así se premia a las campañas con <strong>más donantes</strong>, no solo con más dinero.
+                    Ej.: 1 donante de Bs 100 → 100 pts; 4 donantes de Bs 25 → (4·5)² = 400 pts.</p>
+                </div>
+              </div>
+              <div class="card-dc mb-4">
+                <div class="card-header"><i class="bi bi-plus-circle text-gold me-2"></i>Nuevo fondo de reserva</div>
+                <div class="card-body">
+                  <form id="formFondo" class="d-flex gap-2">
+                    <div class="input-group"><span class="input-group-text">Bs</span><input type="number" class="form-control" id="montoFondo" min="1" step="0.01" placeholder="5000" required></div>
+                    <button class="btn btn-gold text-nowrap" id="btnFondo">Crear fondo</button>
+                  </form>
+                  <hr style="border-color:var(--dc-border)">
+                  <label class="form-label">Simulación rápida (sin guardar)</label>
+                  <form id="formSimular" class="d-flex gap-2">
+                    <div class="input-group"><span class="input-group-text">Bs</span><input type="number" class="form-control" id="montoSimular" min="1" step="0.01" value="1000" required></div>
+                    <button class="btn btn-ghost text-nowrap" id="btnSimular"><i class="bi bi-play me-1"></i>Simular</button>
+                  </form>
+                </div>
+              </div>
+              <div class="card-dc">
+                <div class="card-header"><i class="bi bi-safe text-gold me-2"></i>Fondos de reserva</div>
+                <div class="table-responsive"><table class="table table-dc" id="tablaFondos"><thead><tr><th>#</th><th>Monto</th><th>Fecha</th><th>Estado</th><th class="text-end"></th></tr></thead><tbody></tbody></table></div>
+              </div>
+            </div>
+            <div class="col-lg-7">
+              <div class="card-dc mb-4">
+                <div class="card-header d-flex justify-content-between"><span><i class="bi bi-calculator text-gold me-2"></i>Resultado del cálculo</span><span class="small text-muted" id="simInfo"></span></div>
+                <div class="card-body" id="resultadoSim"><div class="empty-state"><i class="bi bi-calculator"></i>Ejecute una simulación para ver la distribución.</div></div>
+              </div>
+              <div class="card-dc">
+                <div class="card-header"><i class="bi bi-clock-history text-gold me-2"></i>Historial de distribuciones</div>
+                <div class="table-wrap" style="max-height:320px"><table class="table table-dc" id="tablaHistorial"><thead><tr><th>Fecha</th><th>Campaña</th><th>Puntuación</th><th>Asignado</th><th>Hash de auditoría</th></tr></thead><tbody></tbody></table></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="admin-sec d-none" id="sec-catalogos">
+          <div class="mb-3"><span class="section-kicker">Configuración</span><h3 class="fw-800 mb-0">Categorías y especies</h3></div>
+          <div class="row g-4">
+            <div class="col-lg-6">
+              <div class="card-dc">
+                <div class="card-header"><i class="bi bi-tags text-gold me-2"></i>Categorías</div>
+                <div class="card-body">
+                  <form id="formCategoria" class="row g-2 mb-3">
+                    <div class="col-5"><input class="form-control" name="nombre" placeholder="Nombre" required></div>
+                    <div class="col-4"><input class="form-control" name="icono" placeholder="bi-house" value="bi-tag"></div>
+                    <div class="col-3"><button class="btn btn-gold w-100">Agregar</button></div>
+                    <div class="col-12"><input class="form-control" name="descripcion" placeholder="Descripción (opcional)"></div>
+                  </form>
+                  <ul class="list-group list-group-flush" id="listaCategorias"></ul>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="card-dc">
+                <div class="card-header"><i class="bi bi-box-seam text-gold me-2"></i>Especies (bienes donables)</div>
+                <div class="card-body">
+                  <form id="formEspecie" class="row g-2 mb-3">
+                    <div class="col-5"><input class="form-control" name="nombre" placeholder="Nombre (ej: Leche)" required></div>
+                    <div class="col-4"><input class="form-control" name="unidad_medida" placeholder="litros" required></div>
+                    <div class="col-3"><button class="btn btn-gold w-100">Agregar</button></div>
+                  </form>
+                  <ul class="list-group list-group-flush" id="listaEspecies"></ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="admin-sec d-none" id="sec-auditoria">
+          <div class="mb-3"><span class="section-kicker">Seguridad</span><h3 class="fw-800 mb-0">Log de auditoría</h3></div>
+          <div class="card-dc">
+            <form class="p-3 row g-2 border-bottom" style="border-color:var(--dc-border-soft)!important" id="formAuditoria">
+              <div class="col-md-3"><select class="form-select" id="audAccion"><option value="">Todas las acciones</option></select></div>
+              <div class="col-md-3"><input type="search" class="form-control" id="audBuscar" placeholder="Buscar en descripción / email"></div>
+              <div class="col-md-2"><input type="date" class="form-control" id="audDesde" title="Desde"></div>
+              <div class="col-md-2"><input type="date" class="form-control" id="audHasta" title="Hasta"></div>
+              <div class="col-md-2"><button class="btn btn-gold w-100"><i class="bi bi-funnel me-1"></i>Filtrar</button></div>
+            </form>
+            <div class="table-wrap">
+              <table class="table table-dc table-hover" id="tablaAuditoria">
+                <thead><tr><th data-sort="num">#</th><th data-sort>Fecha</th><th data-sort>Usuario</th><th data-sort>Acción</th><th>Descripción</th><th data-sort>IP</th><th>Navegador</th></tr></thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer id="footer"></footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script src="js/core.js"></script>
+  <script src="js/notificaciones.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>

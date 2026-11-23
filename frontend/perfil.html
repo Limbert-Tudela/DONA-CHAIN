@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="es" data-bs-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mi Perfil · DONA-CHAIN</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link href="css/styles.css" rel="stylesheet">
+</head>
+<body>
+  <nav id="navbar"></nav>
+
+  <main class="container py-4">
+    <div class="row g-4">
+      <div class="col-lg-4">
+        <div class="card-dc mb-4">
+          <div class="card-body text-center pt-4">
+            <span class="avatar avatar-lg mb-3" id="pAvatar">?</span>
+            <h4 class="fw-800 mb-1" id="pNombre">—</h4>
+            <div class="text-muted small mb-2" id="pEmail">—</div>
+            <div class="d-flex justify-content-center gap-2 flex-wrap mb-3" id="pBadges"></div>
+            <div class="row g-2 text-start small">
+              <div class="col-6"><div class="text-muted">CI</div><div class="fw-semibold" id="pCI">—</div></div>
+              <div class="col-6"><div class="text-muted">Teléfono</div><div class="fw-semibold" id="pTelefono">—</div></div>
+              <div class="col-12 mt-2"><div class="text-muted">Miembro desde</div><div class="fw-semibold" id="pFecha">—</div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="wallet-card mb-4">
+          <div class="d-flex justify-content-between">
+            <div class="small text-muted text-uppercase" style="letter-spacing:.12em"><i class="bi bi-wallet2 me-1"></i>Billetera DONA-CHAIN</div>
+            <i class="bi bi-copy copy-btn" id="copiarDireccion" title="Copiar dirección"></i>
+          </div>
+          <div class="hash mt-2" id="pDireccion">—</div>
+          <div class="d-flex justify-content-between align-items-end mt-3">
+            <div><div class="small text-muted">Saldo</div><div class="fs-3 fw-800 text-emerald" id="pSaldo">—</div></div>
+            <div class="qr-box p-1" style="border-radius:8px"><div id="qrDireccion"></div></div>
+          </div>
+          <div class="small text-muted mt-2">Dirección = <span class="mono">0x + SHA-256(email)</span></div>
+        </div>
+
+        <div class="card-dc">
+          <div class="card-body">
+            <div class="row text-center g-2">
+              <div class="col-4"><div class="fs-4 fw-800" id="pTotalDon">0</div><div class="small text-muted">Donaciones</div></div>
+              <div class="col-4"><div class="fs-5 fw-800 text-gold" id="pTotalMonto">0</div><div class="small text-muted">Aportado</div></div>
+              <div class="col-4"><div class="fs-4 fw-800" id="pCampanas">0</div><div class="small text-muted">Campañas</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-8">
+        <div class="card-dc">
+          <div class="card-header pb-0">
+            <ul class="nav nav-tabs nav-tabs-dc border-0" role="tablist" id="perfilTabs">
+              <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tabDonaciones" data-hash="donaciones" type="button"><i class="bi bi-receipt me-1"></i>Mis donaciones</button></li>
+              <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabMensajes" data-hash="mensajes" type="button"><i class="bi bi-chat-dots me-1"></i>Mensajes <span class="badge bg-danger d-none" id="mensajesBadge">0</span></button></li>
+              <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabSeguridad" data-hash="seguridad" type="button"><i class="bi bi-shield-lock me-1"></i>Seguridad y KYC</button></li>
+              <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabOrganizacion" data-hash="organizacion" type="button"><i class="bi bi-building me-1"></i>Organización</button></li>
+              <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabReportes" data-hash="reportes" type="button"><i class="bi bi-flag me-1"></i>Reportes</button></li>
+            </ul>
+          </div>
+
+          <div class="tab-content">
+            <div class="tab-pane fade show active" id="tabDonaciones">
+              <div class="p-3 d-flex gap-2 flex-wrap">
+                <div class="input-group" style="max-width:300px"><span class="input-group-text"><i class="bi bi-search"></i></span>
+                  <input type="search" class="form-control" id="buscarDonacion" placeholder="Filtrar…"></div>
+                <a href="index.html#campanas" class="btn btn-gold ms-auto"><i class="bi bi-heart-fill me-1"></i>Nueva donación</a>
+              </div>
+              <div class="table-wrap">
+                <table class="table table-dc table-hover" id="tablaDonaciones">
+                  <thead><tr>
+                    <th data-sort="num">#</th><th data-sort>Campaña</th><th data-sort>Tipo</th><th data-sort="num">Monto / Cantidad</th>
+                    <th data-sort>Estado</th><th data-sort>Fecha</th><th>Blockchain</th><th class="text-end">Acciones</th>
+                  </tr></thead>
+                  <tbody><tr><td colspan="8" class="text-muted p-4">Cargando…</td></tr></tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="tab-pane fade" id="tabMensajes">
+              <div class="chat-wrap">
+                <div class="chat-contacts">
+                  <div class="p-2 border-bottom" style="border-color:var(--dc-border-soft)!important">
+                    <select class="form-select form-select-sm" id="nuevoChat"><option value="">+ Nueva conversación…</option></select>
+                  </div>
+                  <div id="listaContactos"><div class="p-3 small text-muted">Cargando…</div></div>
+                </div>
+                <div class="chat-main">
+                  <div class="p-3 border-bottom d-flex align-items-center gap-2" style="border-color:var(--dc-border-soft)!important" id="chatHeader">
+                    <i class="bi bi-chat-square-text text-muted"></i><span class="text-muted">Selecciona una conversación</span>
+                  </div>
+                  <div class="chat-messages" id="chatMensajes">
+                    <div class="empty-state m-auto"><i class="bi bi-chat-heart"></i>Conversa con las organizaciones sobre sus campañas.</div>
+                  </div>
+                  <form class="chat-input d-flex gap-2" id="formChat">
+                    <input type="text" class="form-control" id="chatTexto" placeholder="Escribe un mensaje…" maxlength="2000" disabled autocomplete="off">
+                    <button class="btn btn-gold" id="btnEnviarChat" disabled><i class="bi bi-send-fill"></i></button>
+                  </form>
+                </div>
+              </div>
+            </div>
+
+            <div class="tab-pane fade" id="tabSeguridad">
+              <div class="card-body">
+                <h6 class="ornament-title mb-3">Verificación de identidad (KYC)</h6>
+                <div id="kycEstado" class="mb-4"></div>
+
+                <h6 class="ornament-title mb-3 mt-4">Datos personales</h6>
+                <form id="formDatos" class="row g-3 mb-4">
+                  <div class="col-md-7"><label class="form-label">Nombre completo</label><input class="form-control" name="nombre" id="dNombre" required minlength="3"></div>
+                  <div class="col-md-5"><label class="form-label">Teléfono</label><input class="form-control" name="telefono" id="dTelefono"></div>
+                  <div class="col-12 text-end"><button class="btn btn-ghost" id="btnDatos"><i class="bi bi-save me-1"></i>Guardar datos</button></div>
+                </form>
+
+                <h6 class="ornament-title mb-3">Autenticación de dos factores (2FA)</h6>
+                <div id="bloque2FA" class="mb-4"></div>
+
+                <h6 class="ornament-title mb-3">Cambiar contraseña</h6>
+                <form id="formPassword" class="row g-3">
+                  <div class="col-md-4"><label class="form-label">Contraseña actual</label><input type="password" class="form-control" name="actual" required autocomplete="current-password"></div>
+                  <div class="col-md-4"><label class="form-label">Nueva contraseña</label><input type="password" class="form-control" name="nueva" required minlength="6" autocomplete="new-password"></div>
+                  <div class="col-md-4"><label class="form-label">Confirmar nueva</label><input type="password" class="form-control" name="confirmar" required minlength="6" autocomplete="new-password"></div>
+                  <div class="col-12 text-end"><button class="btn btn-outline-gold" id="btnPassword"><i class="bi bi-key me-1"></i>Actualizar contraseña</button></div>
+                </form>
+              </div>
+            </div>
+
+            <div class="tab-pane fade" id="tabOrganizacion">
+              <div class="card-body" id="orgContenido"><div class="text-muted">Cargando…</div></div>
+            </div>
+
+            <div class="tab-pane fade" id="tabReportes">
+              <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  <p class="text-muted small mb-0">¿Notaste algo sospechoso en una donación? Repórtalo y el equipo lo revisará.</p>
+                  <button class="btn btn-outline-gold btn-sm" id="btnNuevoReporte"><i class="bi bi-flag me-1"></i>Nuevo reporte</button>
+                </div>
+                <div id="listaReportes"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer id="footer"></footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script src="js/core.js"></script>
+  <script src="js/notificaciones.js"></script>
+  <script src="js/perfil.js"></script>
+</body>
+</html>

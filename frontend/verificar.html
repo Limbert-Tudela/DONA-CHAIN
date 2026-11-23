@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es" data-bs-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verificación KYC · DONA-CHAIN</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link href="css/styles.css" rel="stylesheet">
+</head>
+<body>
+  <nav id="navbar"></nav>
+
+  <main class="container py-4">
+    <div class="d-flex flex-wrap justify-content-between align-items-end gap-2 mb-4">
+      <div>
+        <span class="section-kicker"><i class="bi bi-shield-lock me-1"></i>Exclusivo SuperAdmin</span>
+        <h2 class="fw-800 mb-0">Centro de verificación</h2>
+        <p class="text-muted mb-0">Aprueba identidades (CI) y organizaciones (NIT) antes de que puedan operar.</p>
+      </div>
+      <button class="btn btn-ghost" id="btnRecargarVer"><i class="bi bi-arrow-clockwise me-1"></i>Actualizar</button>
+    </div>
+
+    <ul class="nav nav-tabs nav-tabs-dc mb-4" role="tablist">
+      <li class="nav-item"><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#tabCI" type="button"><i class="bi bi-person-vcard me-1"></i>Identidades (CI) <span class="badge bg-warning text-dark" id="cntCI">0</span></button></li>
+      <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabOrg" type="button"><i class="bi bi-building me-1"></i>Organizaciones <span class="badge bg-warning text-dark" id="cntOrg">0</span></button></li>
+      <li class="nav-item"><button class="nav-link" data-bs-toggle="tab" data-bs-target="#tabRoles" type="button"><i class="bi bi-person-gear me-1"></i>Roles</button></li>
+    </ul>
+
+    <div class="tab-content">
+      <div class="tab-pane fade show active" id="tabCI">
+        <div class="row g-4" id="gridCI"></div>
+      </div>
+
+      <div class="tab-pane fade" id="tabOrg">
+        <div class="row g-4" id="gridOrg"></div>
+        <h6 class="ornament-title mt-5 mb-3">Todas las organizaciones</h6>
+        <div class="card-dc">
+          <div class="table-wrap">
+            <table class="table table-dc table-hover" id="tablaOrgs">
+              <thead><tr><th>#</th><th>Nombre legal</th><th>NIT</th><th>Tipo</th><th>Representante</th><th>Campañas</th><th>Documento</th><th>Estado</th></tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= ROLES ================= -->
+      <div class="tab-pane fade" id="tabRoles">
+        <div class="card-dc">
+          <div class="p-3 border-bottom" style="border-color:var(--dc-border-soft)!important">
+            <div class="input-group" style="max-width:320px"><span class="input-group-text"><i class="bi bi-search"></i></span>
+              <input type="search" class="form-control" id="buscarRol" placeholder="Buscar usuario…"></div>
+          </div>
+          <div class="table-wrap">
+            <table class="table table-dc table-hover" id="tablaRoles">
+              <thead><tr><th>#</th><th>Usuario</th><th>CI</th><th>KYC</th><th>Rol actual</th><th>Cambiar rol</th></tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer id="footer"></footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script src="js/core.js"></script>
+  <script src="js/notificaciones.js"></script>
+  <script src="js/verificar.js"></script>
+</body>
+</html>
